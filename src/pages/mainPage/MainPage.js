@@ -18,6 +18,15 @@ const MainPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [auxDependente, setAuxDependent] = useState();
     const service = new BackService();
+    const styleMainForm = { margin: '20px', display: 'flex', flexDirection: 'column', width: '400px' }
+    const personalData = {
+        "cpf": "CPF",
+        "full_name": "Nome Completo",
+        "phone_number": "Número de Telefone",
+        "city": "Cidade",
+        "address": "Endereço",
+        "email": "E-mail"
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -130,11 +139,12 @@ const MainPage = () => {
 
         return (
           <div>
-            <h1>QR Code Generator</h1>
+            <h1>QR Code</h1>
+            <p>QRcode contendo informações do responsavel e do dependente</p>
             <QRCode value={url} id='1'/>
 
             <div>
-            <button onClick={downloadQRCode}>Download QR Code</button>
+            <button style={{ marginTop: '20px', marginBottom: '30px' }} onClick={downloadQRCode}>Download QR Code</button>
             </div>
           </div>
 
@@ -142,7 +152,7 @@ const MainPage = () => {
       };
 
     return (
-        <div>
+        <div style={{ margin: '50px', width: '800px' }}>
             <h1>Detalhes do Usuário e Dependente</h1>
             <Tabs>
                 <TabList>
@@ -154,8 +164,8 @@ const MainPage = () => {
 
                 <TabPanel>
                         {Object.keys(initialData).map((key) => (
-                            <div key={key} style={{ margin: '20px' }} className="mb-4 space-x-4">
-                                <label>{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}:</label>
+                            <div key={key} style={styleMainForm}>
+                                <label>{personalData[key]}:</label>
                                 {key === 'email' || key === 'cpf' ? (
                                     <input
                                         type="text"
@@ -172,14 +182,14 @@ const MainPage = () => {
                                 )}
                             </div>
                         ))}
-                        <button type="button" onClick={handleUpdate}>Atualizar Dados</button>
+                        <button style={{ margin: '20px' }}type="button" onClick={handleUpdate}>Atualizar Dados</button>
                 </TabPanel>
 
                 <TabPanel>
                     {dependent ? (
                         <>
-                            <div className="flex flex-col space-y-2">
-                                <div>
+                            <div>
+                                <div style={styleMainForm}>
                                 <label>Nome:</label>
                                 <input
                                     type="text"
@@ -189,7 +199,7 @@ const MainPage = () => {
                                 />
                                 </div>
                                 
-                                <div>
+                                <div style={styleMainForm}>
                                 <label>Descrição:</label>
                                 <input
                                     type="text"
@@ -199,8 +209,9 @@ const MainPage = () => {
                                 />
                                     
                                 </div>
-                                <button type="button" onClick={handleDependentUpdate}>Atualizar Dados</button>
+                                
                             </div>
+                            <button style={{ margin: '20px'}} type="button" onClick={handleDependentUpdate}>Atualizar Dados</button>
 
                             
                         </>
@@ -213,7 +224,7 @@ const MainPage = () => {
                 <TabPanel>
                     <QRCodeGenerator url={`${window.location.protocol}//${window.location.host}/QRcode/${formData.cpf}`} />
                     
-                    <button type="button" onClick={handleQRCode}>Ver info QRCode</button>
+                    <button type="button" onClick={handleQRCode}>Ver informações QRCode</button>
 
                 </TabPanel>
 
@@ -228,10 +239,10 @@ const MainPage = () => {
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
-                        <span className="close" onClick={closeModal}>Fechar</span>
+                        <span style={styleMainForm} className="close" onClick={closeModal}>Cancelar</span>
                         <h2>Cadastrar Dependente</h2>
                         <form onSubmit={handleModalSubmit}>
-                            <div>
+                            <div style={styleMainForm}>
                                 <label>Nome:</label>
                                 <input
                                     type="text"
@@ -240,7 +251,7 @@ const MainPage = () => {
                                     onChange={handleAuxDependentChange}
                                 />
                             </div>
-                            <div>
+                            <div style={styleMainForm}>
                                 <label>Descrição:</label>
                                 <input
                                     type="text"
@@ -249,7 +260,7 @@ const MainPage = () => {
                                     onChange={handleAuxDependentChange}
                                 />
                             </div>
-                            <button type="submit">Cadastrar</button>
+                            <button style={{'margin': '20px'}} type="submit">Cadastrar</button>
                         </form>
                     </div>
                 </div>

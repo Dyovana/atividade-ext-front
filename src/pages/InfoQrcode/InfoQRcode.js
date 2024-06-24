@@ -12,6 +12,7 @@ const QRCode = () => {
   useEffect(() => {
     const fetchData = async () => {
         const result = await service.getAllInfo(id);
+        console.log(result)
         if (result.status === 200){
             setData(result.data);
         } else {
@@ -25,7 +26,7 @@ const QRCode = () => {
   // Componente para exibir as informações do usuário e do dependente
     const UserInfo = ({ user, dependent }) => {
         return (
-        <div>
+        <div style={{ margin: '50px'}}>
             <h2>Informações do Responsável</h2>
             <p><strong>Nome Completo:</strong> {user.full_name}</p>
             <p><strong>Telefone para contato:</strong> {user.phone_number}</p>

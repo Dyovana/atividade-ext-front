@@ -16,6 +16,7 @@ class BackService {
       return response;
 
     } catch (error) {
+      console.log("passou aqui")
       return error.response
 
     }

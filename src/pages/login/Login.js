@@ -46,12 +46,12 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div style={{ margin: '50px', marginBottom: '30px' }}>
 
       
       <form className="bg-white p-6 mb-8 rounded shadow-md w-full max-w-sm" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <div className="grid mr-4">
+        <div style={{ margin: '20px', display: 'flex', flexDirection: 'column', width: '400px' }}>
           <label className="block text-gray-700 m-2" htmlFor="email">
             Email
           </label>
@@ -64,7 +64,7 @@ const LoginForm = () => {
             required
           />
         </div>
-        <div className="mb-6">
+        <div style={{ margin: '20px', display: 'flex', flexDirection: 'column', width: '400px' }}>
           <label className="block text-gray-700 mb-2" htmlFor="password">
             Senha
           </label>
@@ -79,7 +79,7 @@ const LoginForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+          style={{ margin: '20px'}}
         >
           Entrar
         </button>
@@ -88,6 +88,7 @@ const LoginForm = () => {
       <button
           type="button" 
           onClick={handleRegister}
+          style={{ margin: '20px'}}
         >
           Cadastrar
       </button>
