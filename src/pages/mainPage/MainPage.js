@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import BackService from '../../services/common-service';
 import 'react-tabs/style/react-tabs.css';
+import { useNavigate } from 'react-router-dom';
+import QRCode from 'qrcode.react';
+import { description } from '../../constants/constants';
+
 
 const MainPage = () => {
     const location = useLocation();
     const initialData = location.state;
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState(initialData);
     const [dependent, setDependent] = useState();
@@ -77,6 +82,10 @@ const MainPage = () => {
         }
     };
 
+    const handleQRCode = () => {
+        navigate(`/QRcode/${formData.cpf}`);
+    };
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -102,6 +111,36 @@ const MainPage = () => {
         closeModal();
     };
 
+
+    const QRCodeGenerator = ({ url }) => {
+
+        const downloadQRCode = () => {
+            const canvas = document.getElementById("1");
+            const pngUrl = canvas
+                .toDataURL("image/png")
+                .replace("image/png", "image/octet-stream");
+            let downloadLink = document.createElement("a");
+            downloadLink.href = pngUrl;
+            downloadLink.download = "qrcode.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+          };
+            
+
+        return (
+          <div>
+            <h1>QR Code Generator</h1>
+            <QRCode value={url} id='1'/>
+
+            <div>
+            <button onClick={downloadQRCode}>Download QR Code</button>
+            </div>
+          </div>
+
+        );
+      };
+
     return (
         <div>
             <h1>Detalhes do Usuário e Dependente</h1>
@@ -110,11 +149,12 @@ const MainPage = () => {
                     <Tab>Dados do Usuário</Tab>
                     <Tab>Dados do Dependente</Tab>
                     <Tab>QRCode</Tab>
+                    <Tab>Sobre o Projeto</Tab>
                 </TabList>
 
                 <TabPanel>
                         {Object.keys(initialData).map((key) => (
-                            <div key={key}>
+                            <div key={key} style={{ margin: '20px' }} className="mb-4 space-x-4">
                                 <label>{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}:</label>
                                 {key === 'email' || key === 'cpf' ? (
                                     <input
@@ -138,19 +178,31 @@ const MainPage = () => {
                 <TabPanel>
                     {dependent ? (
                         <>
-                            <input
-                                type="text"
-                                name="name"
-                                value={dependent.name}
-                                onChange={handleDependentChange}
-                            />
-                            <input
-                                type="text"
-                                name="description"
-                                value={dependent.description}
-                                onChange={handleDependentChange}
-                            />
-                            <button type="button" onClick={handleDependentUpdate}>Atualizar Dados</button>
+                            <div className="flex flex-col space-y-2">
+                                <div>
+                                <label>Nome:</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={dependent.name}
+                                    onChange={handleDependentChange}
+                                />
+                                </div>
+                                
+                                <div>
+                                <label>Descrição:</label>
+                                <input
+                                    type="text"
+                                    name="description"
+                                    value={dependent.description}
+                                    onChange={handleDependentChange}
+                                />
+                                    
+                                </div>
+                                <button type="button" onClick={handleDependentUpdate}>Atualizar Dados</button>
+                            </div>
+
+                            
                         </>
                     ) : (
                         <button type="button" onClick={handleCreateDependent}>Cadastrar Dependente</button>
@@ -159,7 +211,16 @@ const MainPage = () => {
 
 
                 <TabPanel>
-                    Visualizar QRcode - Gerar QRcode
+                    <QRCodeGenerator url={`${window.location.protocol}//${window.location.host}/QRcode/${formData.cpf}`} />
+                    
+                    <button type="button" onClick={handleQRCode}>Ver info QRCode</button>
+
+                </TabPanel>
+
+                <TabPanel>
+                    <div style={{ width: '700px', height: '300px',  margin: '20px' }}>
+                    {description.description_project}
+                    </div>
                 </TabPanel>
             </Tabs>
 

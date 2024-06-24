@@ -7,6 +7,18 @@ class BackService {
     this.apiUrlUser = 'http://localhost:8000/user/';
     this.registerDependent = 'register-dependent';
     this.registerUser = 'register-user';
+    this.allInfo = 'all-info';
+  }
+
+  async getAllInfo(id) {
+    try {
+      const response = await axios.get(this.apiUrlUser+this.allInfo+`/${id}`);
+      return response;
+
+    } catch (error) {
+      return error.response
+
+    }
   }
 
   async getUser(email, encoded_password) {
